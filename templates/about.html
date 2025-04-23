@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Carbon Footprint & Neutrality for Indian Coal Mines</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Animate.css for Animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- AOS CSS (Animate On Scroll) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+    <!-- Custom Styling -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('archana-reddy-KEb4PkVMD9Q-unsplash.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Apply a translucent background overlay to avoid text clashing with the background image */
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.6); /* Slight transparency */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Header styling */
+        .header {
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 100px 0 80px;
+            position: relative;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: -1;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+            text-transform: uppercase;
+            animation: fadeInDown 2s;
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 70px 0;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #090909;
+            margin-bottom: 30px;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Card Styling */
+        .card {
+            margin-bottom: 30px;
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            background-color: rgba(255, 255, 255, 0.8); 
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h5 {
+            font-size: 1.25rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* Accordion Styling */
+        .accordion-button {
+            background-color: transparent;
+            color: #5c7af2;
+            font-size: 1.15rem;
+            padding: 15px;
+            border: none; /* Remove border */
+            border-radius: 5px;
+            box-shadow: none; /* Remove box shadow */
+        }
+
+        .accordion-button:hover,
+        .accordion-button:focus {
+            background-color: transparent; /* Ensure background remains transparent */
+            box-shadow: none; /* Ensure box shadow remains removed */
+            color: #5c7af2; /* Maintain text color */
+        }
+
+        .accordion-body {
+            background-color: rgba(248, 249, 250, 0.5);
+            border-left: 3px solid #000000;
+            padding: 20px;
+        }
+
+        /* Certified Articles Section */
+        .certified-articles ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+
+        .certified-articles li {
+            margin: 8px 0;
+            font-size: 1.1rem;
+            color: #0a0a0a;
+        }
+
+        .certified-articles a {
+            text-decoration: none;
+            transition: color 0.10s;
+        }
+
+        .certified-articles a:hover {
+            color: #5078ee;
+            text-decoration: underline;
+        }
+
+        /* Progress Bar Styling */
+        .progress {
+            height: 30px;
+            background-color: #e9ecef;
+            border-radius: 30px;
+        }
+
+        .progress-bar {
+            background-color: #28a745 !important;
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 30px;
+            border-radius: 30px;
+        }
+
+        /* AOS Animation Overrides */
+        [data-aos="fade-right"] {
+            opacity: 0;
+            transform: translate3d(-100px, 0, 0);
+            transition-property: opacity, transform;
+        }
+
+        [data-aos="fade-left"] {
+            opacity: 0;
+            transform: translate3d(100px, 0, 0);
+            transition-property: opacity, transform;
+        }
+
+        /* Small details */
+        a {
+            color: #000000;
+        }
+
+        a:hover {
+            color: #000000;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        <h1 class="animate__animated animate__fadeInDown">Carbon Footprint Tool for Indian Coal Mines</h1>
+    </div>
+
+    <!-- Container with background overlay -->
+    <div class="container content-wrapper">
+
+        <!-- Background Section with Animation -->
+        <section class="section" id="background" data-aos="fade-up">
+            <h2>Background</h2>
+            <p>India is the second-largest coal producer in the world, and coal remains a major source of energy in the country. However, coal mining is also one of the largest contributors to carbon emissions, which play a significant role in global warming. With India’s commitment to achieving climate goals under the Paris Agreement, it is critical to balance the country's reliance on coal with its environmental responsibilities. To meet these commitments, Indian coal mines must work towards reducing their carbon footprint and achieving carbon neutrality.</p>
+        </section>
+
+        <!-- Problem Statement Section with Accordion -->
+        <section class="section" id="problem-statement" data-aos="fade-right">
+            <h2>Problem Statement</h2>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Click to View Problem Statement
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            The Indian coal mining sector faces the challenge of quantifying and managing its carbon emissions effectively. Mining activities such as excavation, transportation, and equipment usage generate significant greenhouse gases. Without proper monitoring, it is difficult to measure emissions and devise effective mitigation strategies. Additionally, existing carbon sinks (like forests) may not be sufficient to offset these emissions. The industry requires a comprehensive solution that not only quantifies emissions but also provides actionable pathways to reduce them.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution Section with Card UI -->
+        <section class="section" id="solution" data-aos="fade-left">
+            <h2>Solution</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card animate__animated animate__fadeInUp">
+                        <div class="card-body">
+                            <h5 class="card-title">Emission Estimation</h5>
+                            <p class="card-text">Input mining activities data to calculate the carbon footprint of each operation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card animate__animated animate__fadeInUp" data-aos="fade-up">
+                        <div class="card-body">
+                            <h5 class="card-title">Per Capita Emission</h5>
+                            <p class="card-text">Analyze per capita emissions for a coal mine to understand individual contributions to total emissions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card animate__animated animate__fadeInUp" data-aos="fade-up">
+                        <div class="card-body">
+                            <h5 class="card-title">Carbon Neutrality Pathways</h5>
+                            <p class="card-text">Identify and evaluate various strategies for reducing emissions and achieving carbon neutrality.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress bar to simulate emissions reduction goals -->
+            <div class="progress mt-4">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                    60% Towards Carbon Neutrality
+                </div>
+            </div>
+        </section>
+
+        <!-- Certified Articles Section -->
+        <section class="section certified-articles" id="certified-articles" data-aos="fade-right">
+            <h2>Certified Articles and References</h2>
+            <p>Our approach is informed by internationally recognized research and certified environmental standards. Here are some key references:</p>
+            <ul>
+                <li><a href="https://www.ipcc.ch/">Intergovernmental Panel on Climate Change (IPCC) Reports</a></li>
+                <li><a href="https://www.worldcoal.org/">World Coal Association: Carbon Capture and Storage Technologies</a></li>
+                <li><a href="https://www.un.org/sustainabledevelopment/climate-change/">United Nations Climate Change Initiatives</a></li>
+                <li><a href="https://www.iea.org/reports/world-energy-outlook">International Energy Agency (IEA): World Energy Outlook</a></li>
+                <li><a href="https://www.carbontrust.com/resources/briefing-what-are-carbon-credits">Carbon Trust: Carbon Credits Briefing</a></li>
+            </ul>
+        </section>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS JS for Scroll Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init(); // Initialize AOS animations
+    </script>
+</body>
+</html>

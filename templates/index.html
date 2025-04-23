@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coal Mine Carbon Footprint Dashboard</title>
+    <!-- Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS (for icons) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        header {
+            background-color: #2d3748; /* Dark gray background */
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        nav ul {
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        nav ul li {
+            position: relative;
+            margin-right: 1rem;
+        }
+
+        nav ul li a {
+            padding: 0.75rem 1rem;
+            color: #ffffff; /* White text */
+            text-decoration: none; /* Remove underline */
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            font-weight: 500; /* Medium weight font */
+        }
+
+        nav ul li a:hover {
+            background-color: #4a5568; /* Slightly lighter gray background */
+            color: #ffffff; /* Text color on hover */
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 0.5rem;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+        }
+
+        .dropdown-menu a {
+            color: #333; /* Dark text color */
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: block;
+            font-weight: 400;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f3f4f6; /* Light gray background */
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .login-signup {
+            font-weight: 700;
+            background-color: #facc15; /* Yellow background */
+            color: #1a202c; /* Dark text color */
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none; /* Remove underline */
+        }
+
+        .login-signup:hover {
+            background-color: #fbbf24; /* Lighter yellow on hover */
+            color: #1a202c;
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu-button {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-button {
+                display: block;
+                color: #ffffff; /* White color for mobile menu button */
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            .mobile-menu {
+                display: none;
+                flex-direction: column;
+            }
+            .mobile-menu.active {
+                display: flex;
+            }
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+            nav ul li {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Image Slider styles */
+        .slider {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 24rem;
+            margin-top: 1.5rem;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .prev {
+            left: 1rem;
+        }
+
+        .next {
+            right: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="text-white p-4 shadow-md">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="text-2xl font-bold">Coal Mine Carbon Footprint</div>
+            <nav>
+                <!-- Mobile menu button -->
+                <div class="mobile-menu-button flex items-center md:hidden">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="mobile-menu hidden md:flex space-x-4 items-center">
+                    <li class="dropdown">
+                        <a href="/emission" aria-haspopup="true" aria-expanded="false">Emission Estimation</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/s">State wise Mine Data</a></li>
+                            <li><a href="transportation.html">Calculate Real Time</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" aria-haspopup="true" aria-expanded="false">Carbon Neutrality Pathways</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="renewable.html">Renewable Energy</a></li>
+                            <li><a href="energy-efficiency.html">Energy Efficiency</a></li>
+                            <li><a href="carbon-capture.html">Carbon Capture</a></li>
+                            <li><a href="carbon-credits.html">Carbon Credits & Offsets</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" aria-haspopup="true" aria-expanded="false">Afforestation Offsets</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="reforestation.html">Reforestation Projects</a></li>
+                            <li><a href="energy-efficiency.html">Urban Greening</a></li>
+                            <li><a href="carbon-capture.html">Agroforestry</a></li>
+                            <li><a href="mangrove-restoration.html">Mangrove Restoration</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="flex items-center space-x-4">
+                    <a href="login.html" class="login-signup">Login</a>
+                    <a href="signup.html" class="login-signup">Sign Up</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Image Slider Section -->
+    <section class="slider">
+        <div class="slides">
+            <!-- Slide 1 -->
+            <div class="slide">
+                <img src="../static/assets/image.png" alt="Coal Mine">
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide">
+                <img src="../static/assets/Coal_mining.png" alt="Government Building">
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide">
+                <img src="../static/assets/forestcover.png" alt="Prime Minister">
+            </div>
+        </div>
+        <!-- Navigation buttons -->
+        <button class="prev">❮</button>
+        <button class="next">❯</button>
+    </section>
+
+
+    <!-- News Ticker Section -->
+<section class="news-ticker" style="background-color: #2d3748; color: white; padding: 10px 0; overflow: hidden; position: relative;">
+    <div class="news-ticker-wrapper" style="display: flex; white-space: nowrap;">
+        <!-- News Items -->
+        <div class="news-ticker-items" style="display: flex;">
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Coal Industry Sees Record Low Emissions in 2024</span>
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Renewable Energy Sources Integrated into Mining Operations</span>
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Government Initiates New Carbon Offset Programs</span>
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Carbon Capture Technology Deployed in Major Coal Mines</span>
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Afforestation Projects Achieve 10,000 Hectares of New Forests</span>
+        </div>
+        <!-- Duplicate News Items for Seamless Scrolling -->
+        <div class="news-ticker-items" style="display: flex;">
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Coal Industry Sees Record Low Emissions in 2024</span>
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Renewable Energy Sources Integrated into Mining Operations</span>
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Government Initiates New Carbon Offset Programs</span>
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Carbon Capture Technology Deployed in Major Coal Mines</span>
+            <span class="news-ticker-item" style="margin-right: 50px; font-size: 1rem;">Afforestation Projects Achieve 10,000 Hectares of New Forests</span>
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes slide {
+        0% {
+            transform: translateX(0); /* Start at the beginning */
+        }
+        100% {
+            transform: translateX(-100%); /* Slide all the way to the end */
+        }
+    }
+
+    .news-ticker-wrapper {
+        animation: slide 15s linear infinite; /* Slower speed for smoother scrolling (60s) */
+    }
+
+    .news-ticker-wrapper:hover {
+        animation-play-state: paused; /* Stop on hover */
+    }
+</style>
+
+
+    <!-- Main Dashboard Section -->
+    <section class="container mx-auto mt-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Total Emissions Card -->
+            <div class="bg-white shadow-md rounded-lg p-6 text-center">
+                <h2 class="text-xl font-bold text-gray-700">Total Emissions</h2>
+                <p class="text-3xl font-semibold text-blue-600 mt-4">12,000 tCO2</p>
+                <p class="text-sm text-gray-500 mt-2">as of September 2024</p>
+            </div>
+
+            <!-- Per Capita Emissions Card -->
+            <div class="bg-white shadow-md rounded-lg p-6 text-center">
+                <h2 class="text-xl font-bold text-gray-700">Per Capita Emissions</h2>
+                <p class="text-3xl font-semibold text-blue-600 mt-4">5.3 tCO2/person</p>
+                <p class="text-sm text-gray-500 mt-2">based on 2,200 employees</p>
+            </div>
+
+            <!-- Offset Achieved Card -->
+            <div class="bg-white shadow-md rounded-lg p-6 text-center">
+                <h2 class="text-xl font-bold text-gray-700">Offset Achieved</h2>
+                <p class="text-3xl font-semibold text-green-600 mt-4">3,000 tCO2</p>
+                <p class="text-sm text-gray-500 mt-2">via afforestation</p>
+            </div>
+
+            <!-- Carbon Neutrality Pathways Card -->
+            <div class="bg-white shadow-md rounded-lg p-6 text-center">
+                <h2 class="text-xl font-bold text-gray-700">Carbon Neutrality Pathways</h2>
+                <a href="/live-emission-tracking.html">
+                    <button class="bg-blue-600 text-white py-2 px-4 rounded-lg mt-4">
+                        Live Emission Tracking
+                    </button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Graphs/Charts Section -->
+    <section class="bg-white p-6 mt-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-bold mb-4">Carbon Emissions Breakdown</h2>
+        <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+            <div class="w-full md:w-1/2">
+                <canvas id="emissionsChart"></canvas>
+            </div>
+            <div class="w-full md:w-1/2">
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+
+
+  <!-- Mission and Vision Section (with Headline) -->
+<section style="background-color: #edf2f7; padding: 4rem 1rem; font-family: 'Poppins', sans-serif;">
+    <div style="max-width: 1200px; margin: 0 auto; text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-size: 2.5rem; font-weight: 700; color: #2d3748; margin-bottom: 1rem;">Our Mission and Vision</h2>
+        <p style="font-size: 1.25rem; color: #4a5568;">We are dedicated to driving sustainable development in the coal mining industry.</p>
+    </div>
+    <div style="display: flex; justify-content: space-between; gap: 2rem;">
+        <!-- Mission Section -->
+        <div style="background-color: #2d3748; color: white; padding: 2rem; border-radius: 10px; width: 48%;">
+            <h3 style="font-size: 2rem; font-weight: 700; color: #facc15; text-align: center; margin-bottom: 1rem;">Mission</h3>
+            <p style="font-size: 1.125rem; line-height: 1.75rem; text-align: justify;">
+                Our mission is to reduce the carbon footprint of coal mining through sustainable practices and innovative technologies, ensuring environmental responsibility while promoting operational efficiency.
+            </p>
+        </div>
+
+        <!-- Vision Section -->
+        <div style="background-color: #2d3748; color: white; padding: 2rem; border-radius: 10px; width: 48%;">
+            <h3 style="font-size: 2rem; font-weight: 700; color: #fbbf24; text-align: center; margin-bottom: 1rem;">Vision</h3>
+            <p style="font-size: 1.125rem; line-height: 1.75rem; text-align: justify;">
+                Our vision is to lead the global mining industry toward a carbon-neutral future by pioneering eco-friendly solutions that balance industrial growth with environmental stewardship.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Google Fonts for better typography -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+
+
+
+    <!-- Footer Section -->
+<footer style="background-color: #2d3748; color: white; padding: 2rem 1rem; text-align: center;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <!-- Footer Links -->
+        <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+            <a href="about.html" style="margin: 0 1rem; color: white; text-decoration: none; font-weight: 500;">About Us</a>
+            <a href="contact.html" style="margin: 0 1rem; color: white; text-decoration: none; font-weight: 500;">Contact</a>
+            <a href="privacy.html" style="margin: 0 1rem; color: white; text-decoration: none; font-weight: 500;">Privacy Policy</a>
+            <a href="terms.html" style="margin: 0 1rem; color: white; text-decoration: none; font-weight: 500;">Terms of Service</a>
+        </div>
+        
+        <!-- Social Media Icons -->
+        <div style="margin-bottom: 1.5rem;">
+            <a href="https://www.facebook.com" target="_blank" style="color: white; margin: 0 0.5rem; text-decoration: none;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank" style="color: white; margin: 0 0.5rem; text-decoration: none;">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" style="color: white; margin: 0 0.5rem; text-decoration: none;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://www.instagram.com" target="_blank" style="color: white; margin: 0 0.5rem; text-decoration: none;">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+        
+        <!-- Copyright Information -->
+        <div style="font-size: 0.875rem; color: #a0aec0;">
+            &copy; 2024 Coal Mine Carbon Footprint Dashboard. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+
+    <!-- Image Slider JavaScript -->
+    <script>
+        const slides = document.querySelector('.slides');
+        const slideImages = document.querySelectorAll('.slide');
+        let currentIndex = 0;
+        const totalSlides = slideImages.length;
+        const slideWidth = 100; // in percentage
+        const delay = 6000; // 6 seconds
+
+        // Function to move to the next slide
+        function moveToNextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            slides.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+        }
+
+        // Function to move to the previous slide
+        function moveToPrevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            slides.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+        }
+
+        // Set up automatic slide show
+        setInterval(moveToNextSlide, delay);
+
+        // Event listeners for navigation buttons
+        document.querySelector('.prev').addEventListener('click', moveToPrevSlide);
+        document.querySelector('.next').addEventListener('click', moveToNextSlide);
+    </script>
+
+    <!-- Chart.js Configuration -->
+    <script>
+        const emissionsData = {
+            labels: ['Excavation', 'Transportation', 'Equipment'],
+            datasets: [{
+                label: 'Emissions (tCO2)',
+                data: [5000, 4000, 3000],
+                backgroundColor: ['#4b5563', '#2563eb', '#10b981']
+            }]
+        };
+
+        const activityData = {
+            labels: ['August', 'September', 'October', 'November', 'December'],
+            datasets: [{
+                label: 'Emission Activity',
+                data: [600, 700, 800, 900, 1000],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const emissionsChartConfig = {
+            type: 'bar',
+            data: emissionsData
+        };
+
+        const activityChartConfig = {
+            type: 'line',
+            data: activityData
+        };
+
+        const emissionsChart = new Chart(
+            document.getElementById('emissionsChart'),
+            emissionsChartConfig
+        );
+
+        const activityChart = new Chart(
+            document.getElementById('activityChart'),
+            activityChartConfig
+        );
+    </script>
+
+    <!-- Mobile menu JavaScript -->
+    <script>
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('active');
+        });
+    </script>
+
+    
+</body>
+</html>

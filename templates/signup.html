@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup - Carbon Neutrality App</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #1b1b1b, #3b3b3b);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('./assets/forestcover.png'); /* Replace with your sustainability-related image */
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    .signup-container {
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.2);
+      width: 350px;
+      text-align: center;
+      position: relative;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .signup-container h1 {
+      margin-bottom: 20px;
+      color: #ffc107; /* Gold for government relevance */
+    }
+
+    .signup-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ffc107;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: #fff;
+      color: #333;
+      transition: border-color 0.3s;
+    }
+
+    .signup-container input:focus {
+      border-color: #28a745; /* Green to signify sustainability and carbon neutrality */
+      outline: none;
+    }
+
+    .signup-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #ffc107;
+      border: none;
+      color: white;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .signup-container button:hover {
+      background-color: #e0a800;
+    }
+
+    .signup-container button:active {
+      background-color: #c69500;
+      transform: scale(0.98);
+    }
+
+    .carbon-effect {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 14px;
+      color: #28a745; /* Green to emphasize environmental focus */
+    }
+
+    .error-message {
+      color: #ff4d4d;
+      display: none;
+    }
+
+    .success-message {
+      color: #28a745;
+      display: none;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #fff;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    input:hover {
+      border-color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="signup-container">
+    <h1>Carbon Neutrality Signup</h1>
+    <p class="carbon-effect">🌍 Join the Journey to Carbon Neutrality</p>
+    <form id="signupForm">
+      <input type="text" id="newUsername" placeholder="Enter Username" required>
+      <input type="email" id="email" placeholder="Enter Email" required>
+      <input type="password" id="newPassword" placeholder="Enter Password" required>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      <button type="submit">Signup</button>
+      <p class="error-message" id="errorMsg">Passwords do not match!</p>
+      <p class="success-message" id="successMsg">Signup successful! Redirecting to login...</p>
+    </form>
+    <div class="footer">Powered by Government of India</div> <!-- Placeholder for government-related content -->
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Get input values
+      const newUsername = document.getElementById('newUsername').value;
+      const email = document.getElementById('email').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      // Validate if passwords match
+      if (newPassword !== confirmPassword) {
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('successMsg').style.display = 'none';
+      } else {
+        // Simulate signup success
+        document.getElementById('errorMsg').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+
+        // Simulate redirection after signup (delay for effect)
+        setTimeout(() => {
+          window.location.href = "login.html"; // Placeholder for redirect to login page
+        }, 2000);
+      }
+    });
+  </script>
+
+</body>
+</html>

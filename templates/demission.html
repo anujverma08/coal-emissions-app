@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coal Mine Data</title>
+    <script src="script.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto text-center">
+        <h1 class="text-4xl font-bold mb-8">Coal Mine Data</h1>
+
+        <!-- Button 1: See State-wise Data -->
+        <button id="stateButton" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mb-4">
+            See State-wise Data
+        </button>
+
+        <!-- Button 2: Calculate Real-Time -->
+        <button id="calculateButton" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mb-4">
+            Calculate Real-Time
+        </button>
+
+        <!-- Dropdown for States -->
+        <div id="stateDropdownContainer" class="hidden mb-4">
+            <label for="stateDropdown" class="block text-lg font-semibold mb-2">Select a State:</label>
+            <select id="stateDropdown" class="block w-1/2 mx-auto p-2 border border-gray-300 rounded shadow-sm">
+                <option value="">-- Select a State --</option>
+                <!-- States will be added dynamically in script.js -->
+            </select>
+        </div>
+
+        <!-- Dropdown for Mines -->
+        <div id="mineDropdownContainer" class="hidden mt-4">
+            <label for="mineDropdown" class="block text-lg font-semibold mb-2">Select a Mine:</label>
+            <select id="mineDropdown" class="block w-1/2 mx-auto p-2 border border-gray-300 rounded shadow-sm">
+                <option value="">-- Select a Mine --</option>
+                <!-- Mines will be added dynamically in script.js -->
+            </select>
+        </div>
+
+        <!-- Display Mine Data -->
+        <div id="mineDataContainer" class="mt-6">
+            <h2 id="mineData" class="text-2xl text-gray-800"></h2>
+        </div>
+
+        <!-- Input Form for Real-Time Calculation -->
+        <div id="calculationForm" class="hidden mt-6">
+            <h2 class="text-2xl font-semibold mb-4">Enter Data for Real-Time Calculation:</h2>
+            <form id="realTimeForm">
+                <div class="mb-4">
+                    <label for="excavationData" class="block text-lg font-semibold mb-2">Excavation Data (tons):</label>
+                    <input type="number" id="excavationData" class="block w-1/2 mx-auto p-2 border border-gray-300 rounded shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="transportationData" class="block text-lg font-semibold mb-2">Transportation Data (km):</label>
+                    <input type="number" id="transportationData" class="block w-1/2 mx-auto p-2 border border-gray-300 rounded shadow-sm" required>
+                </div>
+                <div class="mb-4">
+                    <label for="equipmentData" class="block text-lg font-semibold mb-2">Equipment Usage Data (hours):</label>
+                    <input type="number" id="equipmentData" class="block w-1/2 mx-auto p-2 border border-gray-300 rounded shadow-sm" required>
+                </div>
+                <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Calculate</button>
+            </form>
+        </div>
+
+        <!-- Display Real-Time Visualization -->
+        <div id="visualizationContainer" class="hidden mt-6">
+            <h2 class="text-2xl font-semibold mb-4">Visualization:</h2>
+            <div id="barChartContainer" class="mb-4">
+                <iframe id="barChart" src="" width="600" height="400" frameborder="0"></iframe>
+            </div>
+            <div id="pieChartContainer">
+                <iframe id="pieChart" src="" width="600" height="400" frameborder="0"></iframe>
+            </div>
+        </div>
+
+        <div id="inferenceContainer" class="hidden mt-6">
+            <h2 class="text-2xl font-semibold mb-4">Inference:</h2>
+            <p id="inferenceText" class="text-lg text-gray-700"></p>
+        </div>
+    </div>
+
+    <script>
+    // Sample states and mines data for dropdowns
+    const stateMinesData = {
+        "Madhya Pradesh": ["Rajendra", "Singrauli", "Umaria"],
+        "Chhattisgarh": ["Korba", "Bilaspur", "Raigarh"],
+        "Jharkhand": ["Jharia", "Dhanbad", "Bokaro"],
+        "Odisha": ["Talcher", "Ib Valley", "Angul"],
+        "West Bengal": ["Raniganj", "Bankura", "Asansol"],
+        "Maharashtra": ["Nagpur", "Chandrapur", "Wani"],
+        "Telangana": ["Kothagudem", "Ramagundam", "Adilabad"],
+        "Rajasthan": ["Bikaner", "Barmer", "Jaisalmer"],
+        "Uttar Pradesh": ["Obra", "Sonebhadra", "Mirzapur"],
+        "Gujarat": ["Surat", "Kutch", "Bharuch"]
+    };
+
+    // Handle the 'See State-wise Data' button click
+    document.getElementById('stateButton').addEventListener('click', function () {
+        // Hide the real-time calculation form and visualization
+        document.getElementById('calculationForm').classList.add('hidden');
+        document.getElementById('visualizationContainer').classList.add('hidden');
+
+        // Show the state and mine dropdowns
+        document.getElementById('stateDropdownContainer').classList.remove('hidden');
+        populateStates();
+    });
+
+    // Populate state dropdown
+    function populateStates() {
+        const stateDropdown = document.getElementById('stateDropdown');
+        stateDropdown.innerHTML = '<option value="">-- Select a State --</option>'; // Clear previous options
+        Object.keys(stateMinesData).forEach(state => {
+            const option = document.createElement('option');
+            option.value = state;
+            option.text = state;
+            stateDropdown.appendChild(option);
+        });
+    }
+
+    // Handle state selection and show mines dropdown
+    document.getElementById('stateDropdown').addEventListener('change', function () {
+        const selectedState = this.value;
+        if (selectedState) {
+            populateMines(selectedState);
+            document.getElementById('mineDropdownContainer').classList.remove('hidden');
+        } else {
+            document.getElementById('mineDropdownContainer').classList.add('hidden');
+        }
+    });
+
+    // Populate mines dropdown based on selected state
+    function populateMines(state) {
+        const mineDropdown = document.getElementById('mineDropdown');
+        mineDropdown.innerHTML = '<option value="">-- Select a Mine --</option>'; // Clear previous options
+        stateMinesData[state].forEach(mine => {
+            const option = document.createElement('option');
+            option.value = mine;
+            option.text = mine;
+            mineDropdown.appendChild(option);
+        });
+    }
+
+    // Handle mine selection and fetch data
+    document.getElementById('mineDropdown').addEventListener('change', function () {
+        const selectedMine = this.value;
+        if (selectedMine) {
+            fetchMineData(selectedMine);
+        }
+    });
+
+    // Fetch mine data and display charts
+    function fetchMineData(mineName) {
+        fetch('/getVisualization', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ mineName })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('mineData').innerText = data.error;
+            } else {
+                const barChartUrl = data.barChartUrl;
+                const pieChartUrl = data.pieChartUrl;
+                document.getElementById('mineData').innerHTML = `
+                    <h3 class="text-xl font-semibold">Bar Chart</h3>
+                    <iframe src="${barChartUrl}" style="width: 100%; height: 500px; border: none;"></iframe>
+                    <h3 class="text-xl font-semibold mt-4">Pie Chart</h3>
+                    <iframe src="${pieChartUrl}" style="width: 100%; height: 500px; border: none;"></iframe>
+                `;
+            }
+        })
+        .catch(error => {
+            document.getElementById('mineData').innerText = `An error occurred: ${error}`;
+        });
+    }
+
+    // Handle the 'Calculate Real-Time' button click
+    document.getElementById('calculateButton').addEventListener('click', function () {
+        // Hide the state and mine dropdowns
+        document.getElementById('stateDropdownContainer').classList.add('hidden');
+        document.getElementById('mineDropdownContainer').classList.add('hidden');
+
+        // Show the real-time calculation form
+        document.getElementById('calculationForm').classList.remove('hidden');
+        document.getElementById('visualizationContainer').classList.add('hidden'); // Hide previous visualization
+    });
+
+    // Handle form submission for real-time calculations
+    document.getElementById('realTimeForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const excavationData = document.getElementById('excavationData').value;
+        const transportationData = document.getElementById('transportationData').value;
+        const equipmentData = document.getElementById('equipmentData').value;
+
+        const data = {
+            excavationData,
+            transportationData,
+            equipmentData
+        };
+
+        fetch('/calculateEmissions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('mineData').innerText = data.error;
+            } else {
+                const barChartUrl = data.barChartUrl;
+                const pieChartUrl = data.pieChartUrl;
+                document.getElementById('visualizationContainer').classList.remove('hidden');
+                document.getElementById('barChart').src = barChartUrl;
+                document.getElementById('pieChart').src = pieChartUrl;
+            }
+        })
+        .catch(error => {
+            document.getElementById('mineData').innerText = `An error occurred: ${error}`;
+        });
+    });
+
+
+    // Handle form submission for real-time calculations
+document.getElementById('realTimeForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const excavationData = document.getElementById('excavationData').value;
+    const transportationData = document.getElementById('transportationData').value;
+    const equipmentData = document.getElementById('equipmentData').value;
+
+    const data = {
+        excavationData,
+        transportationData,
+        equipmentData
+    };
+
+    fetch('/calculateEmissions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            document.getElementById('mineData').innerText = data.error;
+        } else {
+            const barChartUrl = data.barChartUrl;
+            const pieChartUrl = data.pieChartUrl;
+            const inference = data.inference;  // Get the inference from the response
+
+            document.getElementById('visualizationContainer').classList.remove('hidden');
+            document.getElementById('barChart').src = barChartUrl;
+            document.getElementById('pieChart').src = pieChartUrl;
+
+            // Display the inference
+            document.getElementById('inferenceText').innerText = inference;
+            document.getElementById('inferenceContainer').classList.remove('hidden');
+        }
+    })
+    .catch(error => {
+        document.getElementById('mineData').innerText = `An error occurred: ${error}`;
+    });
+});
+
+    </script>
+</body>
+</html>

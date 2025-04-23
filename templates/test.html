@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emission Estimation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #eaf4e6;
+            border: 1px solid #c1e1c5;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Emission Estimation</h1>
+        <form id="emission-form">
+            <div class="form-group">
+                <label for="excavation">Excavation (tons):</label>
+                <input type="number" id="excavation" name="excavation" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="transportation">Transportation (km):</label>
+                <input type="number" id="transportation" name="transportation" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="equipment">Equipment Usage (hours):</label>
+                <input type="number" id="equipment" name="equipment" step="0.01" required>
+            </div>
+            <button type="button" onclick="calculateEmissions()">Estimate Emissions</button>
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function calculateEmissions() {
+            // Emission factors (example values, adjust as necessary)
+            const excavationFactor = 0.5; // kg CO2 per ton
+            const transportationFactor = 2.0; // kg CO2 per km
+            const equipmentFactor = 1.5; // kg CO2 per hour
+
+            // Get user inputs
+            const excavation = parseFloat(document.getElementById('excavation').value) || 0;
+            const transportation = parseFloat(document.getElementById('transportation').value) || 0;
+            const equipment = parseFloat(document.getElementById('equipment').value) || 0;
+
+            // Calculate emissions
+            const excavationEmissions = excavation * excavationFactor;
+            const transportationEmissions = transportation * transportationFactor;
+            const equipmentEmissions = equipment * equipmentFactor;
+
+            const totalEmissions = excavationEmissions + transportationEmissions + equipmentEmissions;
+
+            // Display result
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<strong>Total Carbon Emissions:</strong> ${totalEmissions.toFixed(2)} kg CO2`;
+        }
+    </script>
+</body>
+</html>

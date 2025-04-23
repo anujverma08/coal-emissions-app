@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <style>
+        /* Image Slider styles */
+        .slider {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 24rem; /* Adjust height as needed */
+            margin-top: 1.5rem;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center; /* Center image vertically */
+            justify-content: center; /* Center image horizontally */
+        }
+
+        .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit:cover /* Cover the container while maintaining aspect ratio */
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .prev {
+            left: 1rem;
+        }
+
+        .next {
+            right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Image Slider Section -->
+    <section class="slider">
+        <div class="slides">
+            <!-- Slide 1 -->
+            <div class="slide">
+                <img src="1.jpg" alt="Coal Mine">
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide">
+                <img src="2.jpg" alt="Government Building">
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide">
+                <img src="3.jpg" alt="Prime Minister">
+            </div>
+        </div>
+        <!-- Navigation buttons -->
+        <button class="prev">❮</button>
+        <button class="next">❯</button>
+    </section>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const slides = document.querySelector('.slides');
+        const slideImages = document.querySelectorAll('.slide');
+        let currentIndex = 0;
+        const totalSlides = slideImages.length;
+        const slideWidth = 100; // in percentage
+        const delay = 6000; // 6 seconds
+    
+        // Function to move to the next slide
+        function moveToNextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            slides.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+        }
+    
+        // Function to move to the previous slide
+        function moveToPrevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            slides.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+        }
+    
+        // Set up automatic slide show
+        setInterval(moveToNextSlide, delay);
+    
+        // Event listeners for navigation buttons
+        document.querySelector('.prev').addEventListener('click', moveToPrevSlide);
+        document.querySelector('.next').addEventListener('click', moveToNextSlide);
+    });
+    </script>
+</body>
+</html>

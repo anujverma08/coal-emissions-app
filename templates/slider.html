@@ -1,0 +1,84 @@
+<html>
+<head>
+    <title>HTML and CSS Slideshow</title>
+
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            padding: 5%;
+            text-align: center;
+        }
+
+        /* Styling the area of the slides */
+        #slideshow {
+            overflow: hidden;
+            height: 510px;
+            width: 728px;
+            margin: 0 auto;
+        }
+
+        /* Style each of the slides with a fixed width and height */
+        .slide {
+            float: left;
+            height: 510px;
+            width: 728px;
+            background-size: cover; /* Make sure the image covers the entire slide */
+            background-position: center; /* Center the image */
+        }
+
+        /* Add animation to the slides */
+        .slide-wrapper {
+            width: calc(728px * 4);
+            animation: slide 10s ease infinite;
+        }
+
+        /* Define background images for each slide */
+        .slide:nth-child(1) {
+            background-image: url('coal_mining.png');
+        }
+
+        .slide:nth-child(2) {
+            background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fphotos%2Ftree-sunset-clouds-sky-silhouette-736885%2F&psig=AOvVaw0_n4Vckzsf_yIlJD-HC8OI&ust=1726689636818000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMDqn6biyogDFQAAAAAdAAAAABAJ');
+        }
+
+        .slide:nth-child(3) {
+            background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fcolorful&psig=AOvVaw0_n4Vckzsf_yIlJD-HC8OI&ust=1726689636818000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMDqn6biyogDFQAAAAAdAAAAABAR');
+        }
+
+        .slide:nth-child(4) {
+            background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fimages&psig=AOvVaw0_n4Vckzsf_yIlJD-HC8OI&ust=1726689636818000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMDqn6biyogDFQAAAAAdAAAAABAZ');
+        }
+
+        /* Define the animation for the slideshow */
+        @keyframes slide {
+            20% {
+                margin-left: 0px;
+            }
+            40% {
+                margin-left: calc(-728px * 1);
+            }
+            60% {
+                margin-left: calc(-728px * 2);
+            }
+            80% {
+                margin-left: calc(-728px * 3);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Define the slideshow container -->
+    <div id="slideshow">
+        <div class="slide-wrapper">
+
+            <!-- Define each of the slides and use background images -->
+            <div class="slide"></div>
+            <div class="slide"></div>
+            <div class="slide"></div>
+            <div class="slide"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Calculation</title>
+    <script src="calculation.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto text-center">
+        <h1 class="text-4xl font-bold mb-8">Real-Time Calculation</h1>
+
+        <!-- Input Form for Real-Time Calculation -->
+        <div id="calculationForm">
+            <h2 class="text-2xl font-semibold mb-4">Enter Data for Real-Time Calculation:</h2>
+            <form id="realTimeForm">
+                <div class="mb-4">
+                    <label for="excavationData" class="block text-lg font-semibold mb-2">Excavation Data (tons):</label>
+                    <input type="number" id="excavationData" class="block w-1/2 mx-auto p-2 border rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="transportationData" class="block text-lg font-semibold mb-2">Transportation Data (km):</label>
+                    <input type="number" id="transportationData" class="block w-1/2 mx-auto p-2 border rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="weightOfCoal" class="block text-lg font-semibold mb-2">Weight of Coal (tons):</label>
+                    <input type="number" id="weightOfCoal" class="block w-1/2 mx-auto p-2 border rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="equipmentData" class="block text-lg font-semibold mb-2">Equipment Usage Data (hours):</label>
+                    <input type="number" id="equipmentData" class="block w-1/2 mx-auto p-2 border rounded" required>
+                </div>
+                <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Calculate</button>
+            </form>
+        </div>
+
+        <!-- Display Real-Time Visualization -->
+        <div id="visualizationContainer" class="hidden mt-6">
+            <h2 class="text-2xl font-semibold mb-4">Visualization:</h2>
+            <div id="barChartContainer" class="mb-4">
+                <iframe id="barChart" src="" width="600" height="400" frameborder="0"></iframe>
+            </div>
+            <div id="pieChartContainer">
+                <iframe id="pieChart" src="" width="600" height="400" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+
+<script>
+    /// Function to clear visualization content
+function clearVisualization() {
+    const barChartFrame = document.getElementById('barChart');
+    const pieChartFrame = document.getElementById('pieChart');
+
+    if (barChartFrame) {
+        barChartFrame.src = '';
+        barChartFrame.contentWindow.document.open();
+        barChartFrame.contentWindow.document.write('');
+        barChartFrame.contentWindow.document.close();
+    }
+
+    if (pieChartFrame) {
+        pieChartFrame.src = '';
+        pieChartFrame.contentWindow.document.open();
+        pieChartFrame.contentWindow.document.write('');
+        pieChartFrame.contentWindow.document.close();
+    }
+}
+
+// Handle form submission for real-time calculation
+document.getElementById('realTimeForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the form from refreshing the page
+
+    const excavationData = document.getElementById('excavationData').value;
+    const transportationData = document.getElementById('transportationData').value;
+    const equipmentData = document.getElementById('equipmentData').value;
+    const weightOfCoal = document.getElementById('weightOfCoal').value;
+
+    const requestData = {
+        excavationData: excavationData,
+        transportationData: transportationData,
+        equipmentData: equipmentData,
+        weightOfCoal: weightOfCoal
+    };
+
+    fetch('/calculateEmissions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('barChart').src = data.barChartUrl;
+        document.getElementById('pieChart').src = data.pieChartUrl;
+        document.getElementById('visualizationContainer').classList.remove('hidden'); // Show the visualizations
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+// Call clearVisualization when needed (e.g., on page load or on resetting the form)
+clearVisualization();
+
+</script>
+</body>
+</html>
