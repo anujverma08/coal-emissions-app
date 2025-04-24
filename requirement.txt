@@ -1,6 +1,0 @@
-Flask
-pymongo
-plotly
-python-dotenv
-pandas
-gunicorn    
